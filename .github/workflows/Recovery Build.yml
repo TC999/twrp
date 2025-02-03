@@ -68,16 +68,6 @@ jobs:
     - name: Cleanup
       uses: rokibhasansagar/slimhub_actions@main
 
-    - name: Install Android SDK
-      run: |
-        sudo mkdir -p /usr/local/lib/android/sdk/
-        sudo apt-get update
-        sudo apt-get install -y openjdk-8-jdk wget unzip
-        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O sdk-tools.zip
-        sudo unzip sdk-tools.zip -d /usr/local/lib/android/sdk/
-        sudo rm sdk-tools.zip
-        yes | sudo /usr/local/lib/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=/usr/local/lib/android/sdk/ "platform-tools" "platforms;android-30"
-
     - name: Prepare the environment
       run: |
         sudo apt update
@@ -89,6 +79,17 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '8'
+
+    - name: Install Android SDK
+      run: |
+        sudo mkdir -p /usr/local/lib/android/sdk/
+        sudo apt-get update
+        sudo apt-get install -y openjdk-8-jdk wget unzip
+        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O sdk-tools.zip
+        sudo unzip sdk-tools.zip -d /usr/local/lib/android/sdk/
+        sudo rm sdk-tools.zip
+        yes | sudo /usr/local/lib/android/sdk/cmdline-tools/bin/sdkmanager --sdk_root=/usr/local/lib/android/sdk/ "platform-tools" "platforms;android-30"
+
 
     - name: Setup SSH Keys
       if: ${{ startsWith(github.event.inputs.MANIFEST_URL, 'git@github.com') || 
